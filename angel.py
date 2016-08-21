@@ -91,7 +91,7 @@ def separate_players(player_list):
     return (male_male_list, male_female_list, female_female_list)
 
 
-def write_to_csv(*player_lists):
+def write_to_csv(index, *player_lists):
     '''
     Writes a variable number of player lists to csv
     '''
@@ -100,7 +100,7 @@ def write_to_csv(*player_lists):
             print "Length of list: %s" % len(player_list)
 
             cur_time = time.strftime("%Y-%m-%d %H-%M-%S")
-            f = open(cur_time + ".csv", "w")
+            f = open(str(index) + '-' + cur_time + ".csv", "w")
             for player in player_list:
                 f.write(player.to_csv_row())
                 f.write("\n")
@@ -116,7 +116,10 @@ if __name__ == "__main__":
     print "============================================="
     print "\n\n"
     player_list = read_csv(PLAYERFILE)
-
+    list_of_player_chains = angel_mortal_arrange(player_list)
+    for index, player_chain in enumerate(list_of_player_chains):
+        write_to_csv(index, player_chain)
+    '''
     # TAKE NOTE: CHANGE IMPLEMENTATION TO CONNECTED COMPONENTS VERSION
     # DON'T PREMATURELY SPLIT LIST
     (male_male_list, male_female_list,
@@ -143,3 +146,4 @@ if __name__ == "__main__":
 
     # Write the chains to CSV
     write_to_csv(male_male_chain, male_female_chain, female_female_chain)
+    '''

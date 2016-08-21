@@ -99,15 +99,25 @@ def angel_mortal_arrange(player_list):
     # Convert the list of players into a list of valid edges
     player_edges = get_player_edges_from_player_list(player_list)
     # Generate the overall graph from all edges
-    G = get_graph_from_edges(player_edges)
-    # Draw this intermediate graph
-    draw_graph(G)
-    # Output all cycles that encompass all nodes (valid pairings)
-    full_cycles = get_full_cycles_from_graph(G)
-    # Pick any full cycle to draw, or draw nothing if there are no full cycles
-    full_cycle = get_one_full_cycle(full_cycles)
-    # Draw the full cycle if it exists
-    if full_cycle is not None:
-        G_with_full_cycle = convert_full_cycle_to_graph(full_cycle)
-        draw_graph(G_with_full_cycle)
-        return full_cycle
+    overall_graph = get_graph_from_edges(player_edges)
+    # Find all connected components and find cycles for all
+    graphs = list(nx.strongly_connected_component_subgraphs(overall_graph))
+
+    print "\nConnected components detected: %s" % len(graphs)
+
+    list_of_player_chains = []
+
+    for G in graphs:
+        # Draw this intermediate graph
+        draw_graph(G)
+        # Output all cycles that encompass all nodes (valid pairings)
+        full_cycles = get_full_cycles_from_graph(G)
+        # Pick any full cycle to draw, or draw nothing if there are no full cycles
+        full_cycle = get_one_full_cycle(full_cycles)
+        # Draw the full cycle if it exists
+        if full_cycle is not None:
+            G_with_full_cycle = convert_full_cycle_to_graph(full_cycle)
+            draw_graph(G_with_full_cycle)
+            list_of_player_chains.append(full_cycle)
+
+    return list_of_player_chains
