@@ -36,34 +36,18 @@ Distance (or whether an edge exists between two nodes) is a function of:
 # IMPORTS
 import csv
 
+# FROMS
+from models import Player
+from arrange import angel_mortal_arrange
+
 # GLOBALS
 PLAYERFILE = "playerlist.csv"
-
-
-class Player:
-        def is_valid(self):
-                return self.name != "" and self.floor != "" and self.room_number != ""
-
-        def __init__(self, **kwargs):
-                self.name = kwargs.get('name')
-                self.fbname = kwargs.get('fbname')
-                self.floor = kwargs.get('floor')
-                self.room_number = kwargs.get('room_number')
-                self.gender = kwargs.get('gender')
-                self.year = kwargs.get('year')
-                self.gender_pref = kwargs.get('gender_pref')
-                self.faculty = kwargs.get('faculty')
-                self.interests = kwargs.get('interests')
-
-        def __repr__(self):
-                return str(self.name) + ": " + str(self.floor) + "-" + str(self.room_number)
 
 
 def read_csv(filename):
         '''
         Reads a CSV file and outputs a list of Player objects
         '''
-
         person_list = []
         with open(filename, 'rb') as f:
                 reader = csv.reader(f, delimiter=",")
@@ -86,6 +70,10 @@ def read_csv(filename):
 
 
 def separate_players(player_list):
+        '''
+        Separates the list of player list into male_male, male_female, and
+        female_female gender preference lists
+        '''
         male_male_list = []
         male_female_list = []
         female_female_list = []
@@ -100,14 +88,23 @@ def separate_players(player_list):
 
         return (male_male_list, male_female_list, female_female_list)
 
+
+def write_to_csv(*player_lists):
+        '''
+        Writes a variable number of player lists to csv
+        '''
+        for player_list in player_lists:
+                print "\nWriting to csv not implemented :( \n"
+
+                pass
+
+
 if __name__ == "__main__":
-        print ""
-        print ""
+        print "\n\n"
         print "============================================="
         print "tAngel 2016 engine initializing.............."
         print "============================================="
-        print ""
-        print ""
+        print "\n\n"
         player_list = read_csv(PLAYERFILE)
         (male_male_list, male_female_list, female_female_list) = separate_players(player_list)
 
@@ -125,4 +122,11 @@ if __name__ == "__main__":
         print str(female_female_list)
         print ""
 
+        # Create the final chains from each filtered list
+        male_male_chain = angel_mortal_arrange(male_male_list, single_gender=True)
+        male_female_chain = angel_mortal_arrange(male_female_list, single_gender=False)
+        female_female_chain = angel_mortal_arrange(female_female_list, single_gender=True)
+
+        # Write the chains to CSV
+        write_to_csv(male_male_chain, male_female_chain, female_female_chain)
 
