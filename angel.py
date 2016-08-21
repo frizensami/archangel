@@ -116,6 +116,9 @@ if __name__ == "__main__":
     print "============================================="
     print "\n\n"
     player_list = read_csv(PLAYERFILE)
+
+    # TAKE NOTE: CHANGE IMPLEMENTATION TO CONNECTED COMPONENTS VERSION
+    # DON'T PREMATURELY SPLIT LIST
     (male_male_list, male_female_list,
      female_female_list) = separate_players(player_list)
 
@@ -134,11 +137,9 @@ if __name__ == "__main__":
     print ""
 
     # Create the final chains from each filtered list
-    male_male_chain = angel_mortal_arrange(male_male_list, single_gender=True)
-    male_female_chain = angel_mortal_arrange(
-        male_female_list, single_gender=False)
-    female_female_chain = angel_mortal_arrange(
-        female_female_list, single_gender=True)
+    male_male_chain = angel_mortal_arrange(male_male_list)
+    male_female_chain = angel_mortal_arrange(male_female_list)
+    female_female_chain = angel_mortal_arrange(female_female_list)
 
     # Write the chains to CSV
     write_to_csv(male_male_chain, male_female_chain, female_female_chain)
