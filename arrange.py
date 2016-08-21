@@ -1,6 +1,6 @@
 # FROMS
 from models import Player
-from graph import get_graph_from_edges, draw_graph, get_full_cycles_from_graph, full_cycle_to_edges, draw_one_full_cycle
+from graph import get_graph_from_edges, draw_graph, get_full_cycles_from_graph, full_cycle_to_edges, get_one_full_cycle_as_graph
 import networkx as nx
 from random import shuffle
 
@@ -56,8 +56,8 @@ def get_player_edges_from_player_list(player_list, single_gender):
 
 def angel_mortal_arrange(player_list, single_gender=False):
     '''
-    All players in list are interchangeable - same gender, so we can
-    just naively compute distance between all of them
+    Depending on the gender preferences to follow, run the edge-finding
+    algorithm, generate a graph and find a Hamiltonian circuit.
     '''
     print "Arranging player list: %s" % player_list
     # Convert the list of players into a list of valid edges
@@ -67,4 +67,7 @@ def angel_mortal_arrange(player_list, single_gender=False):
     # Output all cycles that encompass all nodes (valid pairings)
     full_cycles = get_full_cycles_from_graph(G)
     # Pick any full cycle to draw, or draw nothing if there are no full cycles
-    draw_one_full_cycle(full_cycles)
+    G_with_full_cycle = get_one_full_cycle_as_graph(full_cycles)
+    # Draw the full cycle
+    if G_with_full_cycle is not None:
+        draw_graph(G_with_full_cycle)
