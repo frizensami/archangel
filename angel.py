@@ -35,6 +35,7 @@ Distance (or whether an edge exists between two nodes) is a function of:
 '''
 # IMPORTS
 import csv
+import time
 
 # FROMS
 from models import Player
@@ -94,10 +95,18 @@ def write_to_csv(*player_lists):
         Writes a variable number of player lists to csv
         '''
         for player_list in player_lists:
-                print "\nWriting to csv not implemented :( \n"
+                if player_list is not None:
+                        print "Length of list: %s" % len(player_list)
 
-                pass
-
+                        cur_time = time.strftime("%Y-%m-%d %H-%M-%S")
+                        f = open(cur_time + ".csv", "w")
+                        for player in player_list:
+                                f.write(player.to_csv_row())
+                                f.write("\n")
+                        # write the first player again to close the loop
+                        f.write(player_list[0].to_csv_row())
+                        f.write("\n")
+                        f.close()
 
 if __name__ == "__main__":
         print "\n\n"

@@ -79,17 +79,21 @@ def full_cycle_to_edges(full_cycle):
     return edges_in_full_cycle
 
 
-def get_one_full_cycle_as_graph(full_cycles):
-    '''
-    Get a graph representation of one cycle from a list of full cycles
-    '''
+def get_one_full_cycle(full_cycles):
     if full_cycles is not None and len(full_cycles) > 0:
         full_cycles = sample(full_cycles, len(full_cycles))
         full_cycle = full_cycles[0]
         print "Full cycle found: %s" % full_cycle
-        edges_in_full_cycle = full_cycle_to_edges(full_cycle)
-        g2 = get_graph_from_edges(edges_in_full_cycle)
-        return g2
+        return full_cycle
+
+
+def convert_full_cycle_to_graph(full_cycle):
+    '''
+    Get a graph representation of one cycle from a list of full cycles
+    '''
+    edges_in_full_cycle = full_cycle_to_edges(full_cycle)
+    g2 = get_graph_from_edges(edges_in_full_cycle)
+    return g2
 
 
 if __name__ == "__main__":

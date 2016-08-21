@@ -2,6 +2,13 @@ class Player:
         def is_valid(self):
                 return self.name != "" and self.floor != "" and self.room_number != ""
 
+        def separate_args_with_commas(self, *args):
+            args = map(lambda x: str(x), args)
+            return ",".join(args)
+
+        def to_csv_row(self):
+            return self.separate_args_with_commas(self.name, self.fbname, self.floor, self.room_number, self.gender, self.year, self.gender_pref, self.faculty, self.interests)
+
         def __init__(self, **kwargs):
                 self.name = kwargs.get('name')
                 self.fbname = kwargs.get('fbname')
