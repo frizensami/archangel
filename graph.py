@@ -2,9 +2,9 @@ import networkx as nx
 import matplotlib.pyplot as plt
 from random import sample
 
-def draw_graph(G, labels=None, graph_layout='shell',
+def draw_graph(G, labels=None, graph_layout='spring',
                node_size=1600, node_color='blue', node_alpha=0.3,
-               node_text_size=12,
+               node_text_size=9,
                edge_color='blue', edge_alpha=0.3, edge_tickness=1,
                edge_text_pos=0.3,
                text_font='sans-serif'):
@@ -54,6 +54,23 @@ def get_graph_from_edges(list_of_player_edges):
         G.add_edge(edge[0], edge[1])
 
     return G
+
+
+def get_one_full_cycle_from_graph(G):
+    number_of_nodes = nx.number_of_nodes(G)
+    cycles = nx.simple_cycles(G)
+
+    for idx, cycle in enumerate(cycles):
+        cycle_length = len(cycle)
+
+        if idx % 10000 == 0:
+            print "Processing cycle: %s with length %s" % (str(idx), str(cycle_length))
+
+        if cycle_length == number_of_nodes:
+            print "Solution found at cycle %s with length %s" % (str(idx), str(cycle_length))
+            return cycle
+
+    return None
 
 
 def get_full_cycles_from_graph(G):

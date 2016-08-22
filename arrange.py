@@ -1,7 +1,8 @@
 # FROMS
 from models import Player
 from graph import get_graph_from_edges, draw_graph, get_full_cycles_from_graph,\
-    full_cycle_to_edges, get_one_full_cycle, convert_full_cycle_to_graph
+    full_cycle_to_edges, get_one_full_cycle, convert_full_cycle_to_graph,\
+    get_one_full_cycle_from_graph
 import networkx as nx
 from random import shuffle
 
@@ -110,10 +111,13 @@ def angel_mortal_arrange(player_list):
     for G in graphs:
         # Draw this intermediate graph
         draw_graph(G)
+        '''
         # Output all cycles that encompass all nodes (valid pairings)
         full_cycles = get_full_cycles_from_graph(G)
         # Pick any full cycle to draw, or draw nothing if there are no full cycles
         full_cycle = get_one_full_cycle(full_cycles)
+        '''
+        full_cycle = get_one_full_cycle_from_graph(G)
         # Draw the full cycle if it exists
         if full_cycle is not None:
             G_with_full_cycle = convert_full_cycle_to_graph(full_cycle)
