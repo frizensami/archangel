@@ -44,6 +44,11 @@ from arrange import angel_mortal_arrange
 # GLOBALS
 PLAYERFILE = "playerlist.tsv"
 
+# Constants
+GENDER_MALE = "Male"
+GENDER_FEMALE = "Female"
+GENDER_NONBINARY = "Non-binary"
+GENDER_NOPREF = "No preference"
 
 def read_csv(filename):
     '''
@@ -109,14 +114,30 @@ def write_to_csv(index, *player_lists):
             f.write("\n")
             f.close()
 
+
+def modify_player_list(player_list):
+        # Force hetero mix
+        for player in player_list:
+                if player.gender_pref == GENDER_NOPREF:
+                        if player.gender == GENDER_MALE:
+                                player.gender_pref = GENDER_FEMALE
+                        elif player.gender == GENDER_FEMALE:
+                                player.gender_pref = GENDER_MALE
+
 if __name__ == "__main__":
     print "\n\n"
     print "============================================="
     print "tAngel 2016 engine initializing.............."
     print "============================================="
     print "\n\n"
+
+    # Get list of Player objects from csv file
     player_list = read_csv(PLAYERFILE)
+    # Map the player list through any neccessary transformations
+    # modify_player_list(player_list)
+    # separate the players into player-chains (connected components)
     list_of_player_chains = angel_mortal_arrange(player_list)
+    # Write each chain to a separate csv
     for index, player_chain in enumerate(list_of_player_chains):
         write_to_csv(index, player_chain)
     '''

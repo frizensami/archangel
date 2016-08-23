@@ -1,6 +1,8 @@
 import networkx as nx
 import matplotlib.pyplot as plt
 from random import sample
+from networkx.algorithms.tournament import hamiltonian_path
+
 
 def draw_graph(G, labels=None, graph_layout='spring',
                node_size=1600, node_color='blue', node_alpha=0.3,
@@ -56,6 +58,10 @@ def get_graph_from_edges(list_of_player_edges):
     return G
 
 
+#def get_hamiltonian_path_from_graph(G):
+#    return hamiltonian_path(G)
+
+
 def get_one_full_cycle_from_graph(G):
     number_of_nodes = nx.number_of_nodes(G)
     cycles = nx.simple_cycles(G)
@@ -64,7 +70,7 @@ def get_one_full_cycle_from_graph(G):
         cycle_length = len(cycle)
 
         if idx % 10000 == 0:
-            print "Processing cycle: %s with length %s" % (str(idx), str(cycle_length))
+            print "Processing cycle: %s with length %s | expecting length %s" % (str(idx), str(cycle_length), str(number_of_nodes))
 
         if cycle_length == number_of_nodes:
             print "Solution found at cycle %s with length %s" % (str(idx), str(cycle_length))
