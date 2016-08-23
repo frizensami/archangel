@@ -58,8 +58,8 @@ def get_graph_from_edges(list_of_player_edges):
     return G
 
 
-#def get_hamiltonian_path_from_graph(G):
-#    return hamiltonian_path(G)
+def get_hamiltonian_path_from_graph(G):
+    return hamiltonian_path(G)
 
 
 def get_one_full_cycle_from_graph(G):
