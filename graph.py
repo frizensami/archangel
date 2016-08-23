@@ -1,7 +1,7 @@
 import networkx as nx
 import matplotlib.pyplot as plt
 from random import sample
-from networkx.algorithms.tournament import hamiltonian_path
+#from networkx.algorithms.tournament import hamiltonian_path
 
 
 def draw_graph(G, labels=None, graph_layout='spring',
