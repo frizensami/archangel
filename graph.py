@@ -76,6 +76,7 @@ def is_there_definitely_no_hamiltonian_cycle(G):
 
 def get_one_full_cycle_from_graph(G):
     number_of_nodes = nx.number_of_nodes(G)
+    nodes = G.nodes()
     cycles = nx.simple_cycles(G)
 
     for idx, cycle in enumerate(cycles):
@@ -83,6 +84,8 @@ def get_one_full_cycle_from_graph(G):
 
         if idx % 10000 == 0:
             print "Processing cycle: %s with length %s | expecting length %s" % (str(idx), str(cycle_length), str(number_of_nodes))
+            remaining_nodes = set(nodes).difference(cycle)
+            print "Remaining nodes: %s\n" % str(remaining_nodes)
 
         if cycle_length == number_of_nodes:
             print "Solution found at cycle %s with length %s" % (str(idx), str(cycle_length))

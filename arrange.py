@@ -5,6 +5,7 @@ from graph import get_graph_from_edges, draw_graph, get_full_cycles_from_graph,\
     get_one_full_cycle_from_graph, get_hamiltonian_path_from_graph,\
     is_there_definitely_no_hamiltonian_cycle
 import networkx as nx
+import time
 from random import shuffle
 
 # Constants
@@ -116,7 +117,8 @@ def angel_mortal_arrange(player_list):
         # Find out if there is DEFINITELY no hamiltonian cycle
         is_there_full_cycle = is_there_definitely_no_hamiltonian_cycle(G)
         print "Is there DEFINITELY no full cycle? - %s" % is_there_full_cycle
-        raw_input()
+        # Sleep for a few seconds
+        time.sleep(2)
         '''
         # Output all cycles that encompass all nodes (valid pairings)
         full_cycles = get_full_cycles_from_graph(G)
