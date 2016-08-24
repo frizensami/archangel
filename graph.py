@@ -62,6 +62,18 @@ def get_hamiltonian_path_from_graph(G):
     return hamiltonian_path(G)
 
 
+def is_there_definitely_no_hamiltonian_cycle(G):
+    nodes = G.nodes()
+    for node in nodes:
+        # If some node only has one neighbour - NO HAM-CYCLE EXISTS
+        if len(G.neighbors(node)) <= 1:
+            print "Node has <= 1 neighbour: %s" % str(node)
+            return True
+
+    return False
+
+
+
 def get_one_full_cycle_from_graph(G):
     number_of_nodes = nx.number_of_nodes(G)
     cycles = nx.simple_cycles(G)
