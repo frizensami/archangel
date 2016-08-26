@@ -36,6 +36,7 @@ Distance (or whether an edge exists between two nodes) is a function of:
 # IMPORTS
 import csv
 import time
+import random
 
 # FROMS
 from models import Player
@@ -119,9 +120,12 @@ def modify_player_list(player_list):
         # Force hetero mix
         for player in player_list:
                 if player.gender_pref == GENDER_NOPREF:
-                        if player.gender == GENDER_MALE:
+                        random_change_preference = random.random() < 0.40
+                        if player.gender == GENDER_MALE and random_change_preference:
+                                print "Male -> Female"
                                 player.gender_pref = GENDER_FEMALE
-                        elif player.gender == GENDER_FEMALE:
+                        elif player.gender == GENDER_FEMALE and random_change_preference:
+                                print "Female -> Male"
                                 player.gender_pref = GENDER_MALE
 
 if __name__ == "__main__":
@@ -134,7 +138,7 @@ if __name__ == "__main__":
     # Get list of Player objects from csv file
     player_list = read_csv(PLAYERFILE)
     # Map the player list through any neccessary transformations
-    # modify_player_list(player_list)
+    modify_player_list(player_list)
     # separate the players into player-chains (connected components)
     list_of_player_chains = angel_mortal_arrange(player_list)
     # Write each chain to a separate csv
