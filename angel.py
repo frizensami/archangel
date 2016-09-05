@@ -5,33 +5,21 @@ Version: 0.0.1
 
 
 
-Program input: List of participants + last year's tAngel list (no same angel/mortal)
+Program input: List of participants
 Program output: Participants matched to each other forming either a) one complete ring or b) multiple complete rings. No lone particpants are allowed.
 
 Priorities (decreasing order) [must be done]:
 1) Forming complete circles (everyone MUST have an angel and mortal)
 2) Respecting gender choices
 
-Optimization objective - get people you DON'T KNOW AT ALL + similar interests
+Optimization objective - get people you DON'T KNOW AT ALL
 Optimization priorities:
 1) Angel - Mortal relationship - they must not know each other as much as possible
 - Achieved by separating by HOUSE (floor) and FACULTY
 
-
-Algorithm:
-1) Read in all CSV data, convert to custom objects
-2) Split into 3 groups - M-M chain, M-F chain, F-F chain
-3) For each chain:
-        1) Calculate adjacency matrix (for all nodes in chain)
-        2) Find euler tour
-        3) That becomes the final chain
-
 Distance (or whether an edge exists between two nodes) is a function of:
 1) Whether they are of different houses
 2) Whether their faculties are different
-3) Whether they have been matched before
-
-
 '''
 # IMPORTS
 import csv
@@ -75,7 +63,9 @@ def read_csv(filename):
                 print "Invalid person during csv reading: " + str(row)
     return person_list
 
-
+'''
+@unused
+'''
 def separate_players(player_list):
     '''
     Separates the list of player list into male_male, male_female, and
@@ -144,31 +134,3 @@ if __name__ == "__main__":
     # Write each chain to a separate csv
     for index, player_chain in enumerate(list_of_player_chains):
         write_to_csv(index, player_chain)
-    '''
-    # TAKE NOTE: CHANGE IMPLEMENTATION TO CONNECTED COMPONENTS VERSION
-    # DON'T PREMATURELY SPLIT LIST
-    (male_male_list, male_female_list,
-     female_female_list) = separate_players(player_list)
-
-    print ""
-
-    print "Male - Male list:"
-    print str(male_male_list)
-    print ""
-
-    print "Male - Female list:"
-    print str(male_female_list)
-    print ""
-
-    print "Female - Female list:"
-    print str(female_female_list)
-    print ""
-
-    # Create the final chains from each filtered list
-    male_male_chain = angel_mortal_arrange(male_male_list)
-    male_female_chain = angel_mortal_arrange(male_female_list)
-    female_female_chain = angel_mortal_arrange(female_female_list)
-
-    # Write the chains to CSV
-    write_to_csv(male_male_chain, male_female_chain, female_female_chain)
-    '''
