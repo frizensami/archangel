@@ -31,13 +31,15 @@ from models import Player
 from arrange import angel_mortal_arrange
 
 # GLOBALS
-PLAYERFILE = "playerlist.tsv"
+PLAYERFILE = "ora2017/playerlist.tsv"
 
 # Constants
 GENDER_MALE = "Male"
 GENDER_FEMALE = "Female"
 GENDER_NONBINARY = "Non-binary"
 GENDER_NOPREF = "No preference"
+
+GENDER_SWAP_PREFERENCE_PERCENTAGE = 0.00
 
 def read_csv(filename):
     '''
@@ -51,6 +53,7 @@ def read_csv(filename):
                                 fbname=row[2],
                                 floor=row[3],
                                 room_number=row[4],
+                                contact_number=row[5],
                                 gender=row[6],
                                 year=row[7],
                                 gender_pref=row[8],
@@ -110,7 +113,7 @@ def modify_player_list(player_list):
         # Force hetero mix
         for player in player_list:
                 if player.gender_pref == GENDER_NOPREF:
-                        random_change_preference = random.random() < 0.40
+                        random_change_preference = random.random() < GENDER_SWAP_PREFERENCE_PERCENTAGE
                         if player.gender == GENDER_MALE and random_change_preference:
                                 print "Male -> Female"
                                 player.gender_pref = GENDER_FEMALE

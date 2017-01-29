@@ -12,7 +12,7 @@ from random import shuffle
 GENDER_MALE = "Male"
 GENDER_FEMALE = "Female"
 GENDER_NONBINARY = "Non-binary"
-GENDER_NOPREF = "No preference"
+GENDER_NOPREF = "No Preference"
 
 
 def get_house_from_player(player):
@@ -36,6 +36,7 @@ def get_house_from_player(player):
 def is_gender_pref_respected(player_being_checked, other_player):
     if player_being_checked.gender_pref == GENDER_NOPREF:
         # If they have no preference, always respected
+        print "Nopref"
         return True
     else:
         # Otherwise check if the other_player gender is what is wanted
@@ -65,14 +66,12 @@ def is_there_edge_between_players(angel_player, mortal_player):
     players_are_from_same_faculty = angel_player.faculty == mortal_player.faculty
     players_are_from_same_house = get_house_from_player(
         angel_player) == get_house_from_player(mortal_player)
-    valid_pairing = not (
-        players_are_from_same_faculty or players_are_from_same_house) and \
-        gender_pref_is_respected
-
+    valid_pairing = not (players_are_from_same_faculty ) and  gender_pref_is_respected # Remove same-house reqr -->  #or players_are_from_same_house) and
     if players_are_from_same_faculty:
         print "players from same fac\n"
-    if players_are_from_same_house:
-        print "players from same house\n"
+    #ignore this requirement
+    #if players_are_from_same_house:
+    #    print "players from same house\n"
     if not gender_pref_is_respected:
         print "gender pref not respected\n"
 
@@ -132,5 +131,7 @@ def angel_mortal_arrange(player_list):
             G_with_full_cycle = convert_full_cycle_to_graph(full_cycle)
             draw_graph(G_with_full_cycle)
             list_of_player_chains.append(full_cycle)
+        else:
+            print "There is no full cycle - sorry! This means that the current set of players cannot form a perfect chain given the arrange requirements"
 
     return list_of_player_chains
