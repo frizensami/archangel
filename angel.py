@@ -31,7 +31,7 @@ from models import Player
 from arrange import angel_mortal_arrange
 
 # GLOBALS
-PLAYERFILE = "ora2017/playerlist.tsv"
+PLAYERFILE = "playerlist.tsv"
 
 # Constants
 GENDER_MALE = "Male"
