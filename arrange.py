@@ -12,7 +12,7 @@ from random import shuffle
 GENDER_MALE = "Male"
 GENDER_FEMALE = "Female"
 GENDER_NONBINARY = "Non-binary"
-GENDER_NOPREF = "No Preference"
+GENDER_NOPREF = "No preference"
 
 
 def get_house_from_player(player):
@@ -68,11 +68,11 @@ def is_there_edge_between_players(angel_player, mortal_player):
         angel_player) == get_house_from_player(mortal_player)
     valid_pairing = not (players_are_from_same_faculty ) and  gender_pref_is_respected and not (players_are_from_same_house)
     if players_are_from_same_faculty:
-        print "players from same fac\n"
+        print "players from same fac"
     if players_are_from_same_house:
-        print "players from same house\n"
+        print "players from same house"
     if not gender_pref_is_respected:
-        print "gender pref not respected\n"
+        print "gender pref not respected"
 
     print "\n"
 
@@ -107,8 +107,12 @@ def angel_mortal_arrange(player_list):
 
     print "\nConnected components detected: %s" % len(graphs)
 
+    print "Printing original player list: "
     for player in player_list:
         print player
+
+    print "\n\n"
+
     
     print "Player list size: " + str(len(player_list))
 
@@ -118,6 +122,11 @@ def angel_mortal_arrange(player_list):
      #   draw_graph(G)
 
     for G in graphs:
+
+        print "Printing players in current graph:"
+        for graph_player in G.nodes():
+            print graph_player
+        
         # Draw this intermediate graph
         print "Number of nodes in graph: " + str(G.number_of_nodes())
         draw_graph(G)
