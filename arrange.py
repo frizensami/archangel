@@ -3,7 +3,7 @@ from models import Player
 from graph import get_graph_from_edges, draw_graph, get_full_cycles_from_graph,\
     full_cycle_to_edges, get_one_full_cycle, convert_full_cycle_to_graph,\
     get_one_full_cycle_from_graph, get_hamiltonian_path_from_graph,\
-    is_there_definitely_no_hamiltonian_cycle
+    is_there_definitely_no_hamiltonian_cycle, hamilton
 import networkx as nx
 import time
 from random import shuffle
@@ -66,12 +66,11 @@ def is_there_edge_between_players(angel_player, mortal_player):
     players_are_from_same_faculty = angel_player.faculty == mortal_player.faculty
     players_are_from_same_house = get_house_from_player(
         angel_player) == get_house_from_player(mortal_player)
-    valid_pairing = not (players_are_from_same_faculty ) and  gender_pref_is_respected # Remove same-house reqr -->  #or players_are_from_same_house) and
+    valid_pairing = not (players_are_from_same_faculty ) and  gender_pref_is_respected and not (players_are_from_same_house)
     if players_are_from_same_faculty:
         print "players from same fac\n"
-    #ignore this requirement
-    #if players_are_from_same_house:
-    #    print "players from same house\n"
+    if players_are_from_same_house:
+        print "players from same house\n"
     if not gender_pref_is_respected:
         print "gender pref not respected\n"
 
@@ -102,15 +101,25 @@ def angel_mortal_arrange(player_list):
     player_edges = get_player_edges_from_player_list(player_list)
     # Generate the overall graph from all edges
     overall_graph = get_graph_from_edges(player_edges)
+    print "Number of nodes in overall graph: " + str(overall_graph.number_of_nodes())
     # Find all connected components and find cycles for all
     graphs = list(nx.strongly_connected_component_subgraphs(overall_graph))
 
     print "\nConnected components detected: %s" % len(graphs)
 
+    for player in player_list:
+        print player
+    
+    print "Player list size: " + str(len(player_list))
+
     list_of_player_chains = []
+
+    #for G in graphs:
+     #   draw_graph(G)
 
     for G in graphs:
         # Draw this intermediate graph
+        print "Number of nodes in graph: " + str(G.number_of_nodes())
         draw_graph(G)
 
         # Find out if there is DEFINITELY no hamiltonian cycle
@@ -124,7 +133,7 @@ def angel_mortal_arrange(player_list):
         # Pick any full cycle to draw, or draw nothing if there are no full cycles
         full_cycle = get_one_full_cycle(full_cycles)
         '''
-        full_cycle = get_one_full_cycle_from_graph(G)
+        full_cycle = hamilton(G) #get_one_full_cycle_from_graph(G)
         #full_cycle = get_hamiltonian_path_from_graph(G)
         # Draw the full cycle if it exists
         if full_cycle is not None:

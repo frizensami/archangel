@@ -93,6 +93,42 @@ def get_one_full_cycle_from_graph(G):
 
     return None
 
+def hamilton(G):
+    # Start with F - which is a tuple of the graph and the first node (the path so far)
+    F = [(G, [G.nodes()[0]])]
+    n = G.number_of_nodes()
+
+
+
+    # while we still have elements in F
+    while F:
+        graph, path = F.pop()
+        confs = []
+
+        # Look at the neighbours of the latest-found node in the path
+        for node in graph.neighbors(path[-1]):
+            # conf_p is a copy of the path
+            conf_p = path[:]
+            # Append the current neighbour to the path
+            conf_p.append(node)
+
+            # Create a graph from the current 
+            conf_g = nx.Graph(graph)
+
+            # Remove the node that we just used to find neighbours for
+            conf_g.remove_node(path[-1])
+
+            # Add this to the new working path 
+            confs.append((conf_g, conf_p))
+        for g, p in confs:
+            if len(p) == n:
+                return p
+            else:
+                path_length = len(p)
+                print "Path length (progress): " + str(path_length) + "/" + str(n)
+                F.append((g, p))
+    return None
+
 
 def get_full_cycles_from_graph(G):
     cycles = list(nx.simple_cycles(G))
