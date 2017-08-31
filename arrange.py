@@ -15,6 +15,9 @@ GENDER_NONBINARY = "Non-binary"
 GENDER_NOPREF = "No preference"
 
 
+DISPLAY_GRAPH = False
+
+
 def get_house_from_player(player):
     if player.floor == 3:
         return "prof"
@@ -130,7 +133,8 @@ def angel_mortal_arrange(player_list):
         
         # Draw this intermediate graph
         print "Number of nodes in graph: " + str(G.number_of_nodes())
-        draw_graph(G)
+        if DISPLAY_GRAPH:
+            draw_graph(G)
 
         # Find out if there is DEFINITELY no hamiltonian cycle
         is_there_full_cycle = is_there_definitely_no_hamiltonian_cycle(G)
