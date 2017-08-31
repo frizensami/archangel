@@ -66,11 +66,12 @@ def is_there_edge_between_players(angel_player, mortal_player):
     players_are_from_same_faculty = angel_player.faculty == mortal_player.faculty
     players_are_from_same_house = get_house_from_player(
         angel_player) == get_house_from_player(mortal_player)
-    valid_pairing = not (players_are_from_same_faculty ) and  gender_pref_is_respected and not (players_are_from_same_house)
+    valid_pairing = not (players_are_from_same_faculty) and  gender_pref_is_respected and (not  players_are_from_same_house)# Remove same-house reqr -->  #or players_are_from_same_house) and
     if players_are_from_same_faculty:
-        print "players from same fac"
+        print "players from same fac\n"
+    #ignore this requirement
     if players_are_from_same_house:
-        print "players from same house"
+        print "players from same house\n"
     if not gender_pref_is_respected:
         print "gender pref not respected"
 
