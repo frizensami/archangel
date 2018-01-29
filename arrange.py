@@ -6,6 +6,7 @@ from graph import get_graph_from_edges, draw_graph, get_full_cycles_from_graph,\
     is_there_definitely_no_hamiltonian_cycle, hamilton
 import networkx as nx
 import time
+import random
 from random import shuffle
 
 # Constants
@@ -15,7 +16,13 @@ GENDER_NONBINARY = "Non-binary"
 GENDER_NOPREF = "No preference"
 
 
-DISPLAY_GRAPH = False
+DISPLAY_GRAPH = True
+
+# Changing this value changes how much we care about the houses of players being the same
+# If 1 - we don't care, and house de-conflicting is ignored. 0 means we won't allow any players of the same house to be matched.
+RELAX_SAME_HOUSE_REQUIREMENT_PERCENTAGE = 0.00
+
+RELAX_SAME_FACULTY_REQUIREMENT_PERCENTAGE = 0.00
 
 
 def get_house_from_player(player):
@@ -66,9 +73,20 @@ def is_there_edge_between_players(angel_player, mortal_player):
         angel_player, mortal_player)
 
     # Check house and faculty are not the same
-    players_are_from_same_faculty = angel_player.faculty == mortal_player.faculty
-    players_are_from_same_house = get_house_from_player(
-        angel_player) == get_house_from_player(mortal_player)
+    random_relax_fac_requirement = random.random() < RELAX_SAME_FACULTY_REQUIREMENT_PERCENTAGE
+    if random_relax_fac_requirement:
+        players_are_from_same_faculty = False
+    else:
+        players_are_from_same_faculty = angel_player.faculty == mortal_player.faculty
+
+    # Relax house requirement
+    random_relax_house_requirement = random.random() < RELAX_SAME_HOUSE_REQUIREMENT_PERCENTAGE
+    if random_relax_house_requirement:
+        players_are_from_same_house = False
+    else:
+        players_are_from_same_house = get_house_from_player(
+            angel_player) == get_house_from_player(mortal_player)
+
     valid_pairing = not (players_are_from_same_faculty) and  gender_pref_is_respected and (not  players_are_from_same_house)# Remove same-house reqr -->  #or players_are_from_same_house) and
     if players_are_from_same_faculty:
         print "players from same fac\n"
