@@ -39,7 +39,8 @@ GENDER_FEMALE = "Female"
 GENDER_NONBINARY = "Non-binary"
 GENDER_NOPREF = "No preference"
 
-GENDER_SWAP_PREFERENCE_PERCENTAGE = 0.00
+GENDER_SWAP_PREFERENCE_PERCENTAGE = 0.0
+
 
 def read_csv(filename):
     '''
