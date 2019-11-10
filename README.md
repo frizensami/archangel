@@ -1,4 +1,4 @@
-# tAngel 2016: Matching algorithm
+# tAngel: Matching algorithm
 ## Author: Sriram Sami
 
 ### Overview
