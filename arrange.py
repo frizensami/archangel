@@ -8,6 +8,7 @@ import networkx as nx
 import time
 import random
 from random import shuffle
+from random import randint
 
 # Constants
 GENDER_MALE = "Male"
@@ -125,7 +126,8 @@ def angel_mortal_arrange(player_list):
     overall_graph = get_graph_from_edges(player_edges)
     print "Number of nodes in overall graph: " + str(overall_graph.number_of_nodes())
     # Find all connected components and find cycles for all
-    graphs = list(nx.strongly_connected_component_subgraphs(overall_graph))
+    graphs = list(overall_graph.subgraph(c) for c in
+                  nx.strongly_connected_components(overall_graph)) ##.strongly_connected_component_subgraphs(overall_graph) is deprecated in version 2.4 https://stackoverflow.com/questions/61154740/attributeerror-module-networkx-has-no-attribute-connected-component-subgraph
 
     print "\nConnected components detected: %s" % len(graphs)
 
