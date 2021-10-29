@@ -1,8 +1,16 @@
 import networkx as nx
 import matplotlib.pyplot as plt
 from random import sample
-#from networkx.algorithms.tournament import hamiltonian_path
+from networkx.algorithms.tournament import hamiltonian_path
 
+import datetime
+import logging
+logger = logging.getLogger(__name__)
+logging.basicConfig(
+    filename=f'logs/{datetime.datetime.utcnow().strftime("%Y-%m-%d-%H-%M-%S")}.log',
+    filemode='w',
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO
+)
 
 def draw_graph(G, labels=None, graph_layout='spring',
                node_size=1600, node_color='blue', node_alpha=0.3,
@@ -67,7 +75,7 @@ def is_there_definitely_no_hamiltonian_cycle(G):
     for node in nodes:
         # If some node only has one neighbour - NO HAM-CYCLE EXISTS
         if len(G.neighbors(node)) <= 1:
-            print "Node has <= 1 neighbour: %s" % str(node)
+            print (f"Node has <= 1 neighbour: {node}")
             return True
 
     return False
@@ -83,12 +91,12 @@ def get_one_full_cycle_from_graph(G):
         cycle_length = len(cycle)
 
         if idx % 10000 == 0:
-            print "Processing cycle: %s with length %s | expecting length %s" % (str(idx), str(cycle_length), str(number_of_nodes))
+            print (f"Processing cycle: {idx} with length {cycle_length} | expecting length {number_of_nodes}")
             remaining_nodes = set(nodes).difference(cycle)
-            print "Remaining nodes: %s\n" % str(remaining_nodes)
+            print (f"Remaining nodes: {remaining_nodes}\n")
 
         if cycle_length == number_of_nodes:
-            print "Solution found at cycle %s with length %s" % (str(idx), str(cycle_length))
+            print (f"Solution found at cycle {idx} with length {cycle_length}")
             return cycle
 
     return None
@@ -125,7 +133,7 @@ def hamilton(G):
                 return p
             else:
                 path_length = len(p)
-                print "Path length (progress): " + str(path_length) + "/" + str(n)
+                print (f"Path length (progress): {path_length} / {n}")
                 F.append((g, p))
     return None
 
@@ -134,7 +142,7 @@ def get_full_cycles_from_graph(G):
     cycles = list(nx.simple_cycles(G))
     number_of_nodes = nx.number_of_nodes(G)
     if number_of_nodes != 0:
-        print "Number of nodes in cycle: %s" % number_of_nodes
+        print (f"Number of nodes in cycle: {number_of_nodes}")
         full_cycles = filter(lambda cycle: len(cycle) == number_of_nodes, cycles)
         return full_cycles
     else:
@@ -157,7 +165,7 @@ def get_one_full_cycle(full_cycles):
     if full_cycles is not None and len(full_cycles) > 0:
         full_cycles = sample(full_cycles, len(full_cycles))
         full_cycle = full_cycles[0]
-        print "Full cycle found: %s" % full_cycle
+        print (f"Full cycle found: {full_cycle}")
         return full_cycle
 
 
