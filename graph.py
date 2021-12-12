@@ -3,19 +3,20 @@ import matplotlib.pyplot as plt
 from random import sample
 from networkx.algorithms.tournament import hamiltonian_path
 
-import datetime
-import logging
-logger = logging.getLogger(__name__)
-logging.basicConfig(
-    filename=f'logs/{datetime.datetime.utcnow().strftime("%Y-%m-%d-%H-%M-%S")}.log',
-    filemode='w',
-    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO
-)
+# import datetime
+# import logging
+# logger = logging.getLogger(__name__)
+# logging.basicConfig(
+#     filename=f'logs/{datetime.datetime.utcnow().strftime("%Y-%m-%d-%H-%M-%S")}.log',
+#     filemode='w',
+#     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO
+# )
+
 
 def draw_graph(G, labels=None, graph_layout='spring',
                node_size=1600, node_color='blue', node_alpha=0.3,
                node_text_size=9,
-               edge_color='blue', edge_alpha=0.3, edge_tickness=1,
+               edge_color='blue', edge_alpha=0.3, edge_thickness=1,
                edge_text_pos=0.3,
                text_font='sans-serif'):
     '''
@@ -34,11 +35,11 @@ def draw_graph(G, labels=None, graph_layout='spring',
         graph_pos = nx.shell_layout(G)
 
     # draw graph
-    nx.draw_networkx_nodes(G, graph_pos, node_size=node_size,
+    nx.draw_networkx_nodes(G, pos = graph_pos, node_size=node_size,
                            alpha=node_alpha, node_color=node_color)
-    nx.draw_networkx_edges(G, graph_pos, width=edge_tickness,
+    nx.draw_networkx_edges(G,  pos = graph_pos, width=edge_thickness,
                            alpha=edge_alpha, edge_color=edge_color)
-    nx.draw_networkx_labels(G, graph_pos, font_size=node_text_size,
+    nx.draw_networkx_labels(G,  pos = graph_pos, font_size=node_text_size,
                             font_family=text_font)
 
     # if labels is None:
@@ -74,7 +75,7 @@ def is_there_definitely_no_hamiltonian_cycle(G):
     nodes = G.nodes()
     for node in nodes:
         # If some node only has one neighbour - NO HAM-CYCLE EXISTS
-        if len(G.neighbors(node)) <= 1:
+        if len(list(G.neighbors(node))) <= 1:
             print (f"Node has <= 1 neighbour: {node}")
             return True
 
@@ -103,38 +104,33 @@ def get_one_full_cycle_from_graph(G):
 
 def hamilton(G):
     # Start with F - which is a tuple of the graph and the first node (the path so far)
-    F = [(G, [G.nodes()[0]])]
+    F = [(G,[list(G.nodes())[0]])]
     n = G.number_of_nodes()
-
-
-
     # while we still have elements in F
     while F:
         graph, path = F.pop()
         confs = []
-
+        neighbors = (node for node in graph.neighbors(path[-1])
+                     if node != path[-1])  # exclude self loops
         # Look at the neighbours of the latest-found node in the path
-        for node in graph.neighbors(path[-1]):
+        for neighbor in neighbors:
             # conf_p is a copy of the path
             conf_p = path[:]
             # Append the current neighbour to the path
-            conf_p.append(node)
-
-            # Create a graph from the current 
+            conf_p.append(neighbor)
+            # Create a graph from the current
             conf_g = nx.Graph(graph)
-
             # Remove the node that we just used to find neighbours for
             conf_g.remove_node(path[-1])
-
-            # Add this to the new working path 
-            confs.append((conf_g, conf_p))
+            # Add this to the new working path
+            confs.append((conf_g,conf_p))
         for g, p in confs:
             if len(p) == n:
                 return p
             else:
                 path_length = len(p)
                 print (f"Path length (progress): {path_length} / {n}")
-                F.append((g, p))
+                F.append((g,p))
     return None
 
 
@@ -153,7 +149,7 @@ def full_cycle_to_edges(full_cycle):
     # Iterate from first element to last minus one
     # Since we want grouping of two
     edges_in_full_cycle = []
-    for i in xrange(0, len(full_cycle) - 1):
+    for i in range(0, len(full_cycle) - 1):
         edges_in_full_cycle.append((full_cycle[i], full_cycle[i + 1]))
 
     # Link the first and last two nodes as well
@@ -179,8 +175,9 @@ def convert_full_cycle_to_graph(full_cycle):
 
 
 if __name__ == "__main__":
-    graph = [(0, 1), (1, 5), (1, 7), (4, 5), (4, 8), (1, 6), (3, 7), (5, 9),
-             (2, 4), (0, 4), (2, 5), (3, 6), (8, 9)]
+    graph = nx.DiGraph()
+    graph.add_edges_from([(0, 1), (1, 5), (1, 7), (4, 5), (4, 8), (1, 6), (3, 7), (5, 9),
+             (2, 4), (0, 4), (2, 5), (3, 6), (8, 9)])
 
     # you may name your edge labels
     labels = map(chr, range(65, 65 + len(graph)))
